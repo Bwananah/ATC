@@ -30,7 +30,7 @@ pipeline = rs.pipeline()
 colorizer = rs.colorizer(2) # white-to-black
 hole_filling = rs.hole_filling_filter()
 
-pipeline.start()
+profile = pipeline.start()
 
 try:
     while True:
@@ -55,15 +55,23 @@ try:
         test = np.where(denoised > 0, 255, 0).astype(np.uint8)
         test = cv2.merge((test,test,test)) # one channel to 3
 
-        # Make bounding box
+        # Make bounding box and print distance to blob
+        depth = np.asanyarray(depth.get_data())
         for i in np.unique(denoised)[1:]:
+            # bbox
             indices = np.where(denoised == i) # indices where that blob was found
             xmin = np.min(indices[1])
             xmax = np.max(indices[1])
             ymin = np.min(indices[0])
             ymax = np.max(indices[0])
-
-            cv2.rectangle(test, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
+            cv2.rectangle(test, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2) #bbox
+            
+            # dist
+            depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
+            dist = depth_scale * depth[int((ymin+ymax)/2),int((xmin+xmax)/2)].astype(float) # center of bbox
+            cv2.putText(test, "{0:.3} m.".format(dist), 
+                            (xmin, ymin - 5),
+                            cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0)) # text
         
         # display information on screen
         #info = np.max(depth_colormap)
