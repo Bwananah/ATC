@@ -68,7 +68,8 @@ try:
             
             # dist
             depth_scale = profile.get_device().first_depth_sensor().get_depth_scale()
-            dist = depth_scale * depth[int((ymin+ymax)/2),int((xmin+xmax)/2)].astype(float) # center of bbox
+            dist = depth_scale * depth[indices[0],indices[1]].astype(float)
+            dist = np.mean(dist)
             cv2.putText(test, "{0:.3} m.".format(dist), 
                             (xmin, ymin - 5),
                             cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0)) # text
