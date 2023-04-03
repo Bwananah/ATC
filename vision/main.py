@@ -2,6 +2,7 @@ import parameters
 from pipeline import Pipeline
 from image_processor import ImageProcessor
 from display import Display
+import numpy as np
 
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
@@ -36,12 +37,12 @@ try:
         image_processor.find_blobs(parameters.min_blob_size)
 
         # make bounding boxes
-        image_processor.make_bounding_boxes()
+        image_processor.make_bounding_boxes(pipeline.get_camera_depths(), pipeline.get_depth_scale())
 
         # display informations
 
         # diplay in window
-        display.show(image_processor.color_image)
+        display.show(image_processor.depth_image)
 
 finally:
     display.stop()

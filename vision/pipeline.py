@@ -65,3 +65,11 @@ class Pipeline():
         
         for filter in self.color_frame_filters:
             self.color_frame = filter(self.color_frame)
+
+    # get the depth scale (used for converting camera distances to meters)
+    def get_depth_scale(self):
+        return self.profile.get_device().first_depth_sensor().get_depth_scale()
+    
+    # get original depth
+    def get_camera_depths(self):
+        return np.asanyarray(self.depth_frame.get_data())

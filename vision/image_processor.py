@@ -54,14 +54,33 @@ class ImageProcessor:
         white_where_blob = np.where(self.labels > 0, 255, 0).astype(np.uint8)  # convert all non-zero labeled pixels to 255
         self.depth_image = cv2.merge((white_where_blob, white_where_blob, white_where_blob))
     
-    def make_bounding_boxes(self):
-        # for each blob, get corners of bbox
+    # create bbox around blobs and get their distances from original camera depth
+    def make_bounding_boxes(self, camera_depth, depth_scale):
+        # reset distances
+        self.distances = []
+
+        # for each blob
         for i in np.unique(self.labels)[1:]:
+            # get corners of bbox
             blob_coords = np.where(self.labels == i) # image coordinates of all of that blob's pixels
             xmin = np.min(blob_coords[1])
             xmax = np.max(blob_coords[1])
             ymin = np.min(blob_coords[0])
             ymax = np.max(blob_coords[0])
 
-            # add rectangle to color image
+            # get distance to object
+            dist = depth_scale * camera_depth[blob_coords[0], blob_coords[1]].astype(float)  # convert distances to meters
+            dist = np.mean(dist)  # get mean distance to blob
+            self.distances.append(dist)  # all distances stored (in meters)
+
+            # add bbox to both images
             cv2.rectangle(self.color_image, (xmin, ymin), (xmax, ymax), constants.BBOX_COLOR, constants.BBOX_THICKNESS)
+            cv2.rectangle(self.depth_image, (xmin, ymin), (xmax, ymax), constants.BBOX_COLOR, constants.BBOX_THICKNESS)
+
+            # add text over bbox to both images
+            cv2.putText(self.color_image, "{0:.3} m.".format(dist), 
+                            (xmin, ymin - 5),
+                            cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0))
+            cv2.putText(self.depth_image, "{0:.3} m.".format(dist), 
+                            (xmin, ymin - 5),
+                            cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0))
