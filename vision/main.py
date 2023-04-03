@@ -2,10 +2,12 @@ import constants
 from pipeline import Pipeline
 from display import Display
 
+# True if we are using the Jetson
+JetsonMode = False
+
 # create objects
 pipeline = Pipeline()
-display = Display(constants.WINDOW_NAME, width=1280)
-
+display = Display('ATC: left side warning', width=1280, displaying=not JetsonMode)
 
 pipeline.start()
 display.start()
