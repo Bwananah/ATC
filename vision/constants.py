@@ -1,0 +1,18 @@
+import cv2
+
+# window parameters
+WINDOW_NAME = 'ATC: left side warning'
+WINDOW_SIZE_FLAG = cv2.WINDOW_AUTOSIZE  # WINDOW_NORMAL, WINDOW_AUTOSIZE, WINDOW_FULLSCREEN
+WINDOW_STATE_FLAG = cv2.WND_PROP_VISIBLE
+ESC_KEY = 27
+
+# text informations
+INFO_POS = (0, 30)
+INFO_FONT = cv2.FONT_HERSHEY_SIMPLEX
+INFO_SIZE = 1
+INFO_COLOR = (255, 255, 255)
+INFO_THICKNESS = 2
+
+# color maps
+COLORIZER_CMAP = 2  # 0-Jet 1-Classic 2-WhiteToBlack 3-BlackToWhite 4-Bio 5-Cold 6-Warm 7-Quantized 8-Pattern
+BGR_TO_RGB = cv2.COLOR_BGR2RGB
