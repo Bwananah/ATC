@@ -1,6 +1,6 @@
 import cv2
 
-# window parameters
+# window
 WINDOW_SIZE_FLAG = cv2.WINDOW_AUTOSIZE  # WINDOW_NORMAL, WINDOW_AUTOSIZE, WINDOW_FULLSCREEN
 WINDOW_STATE_FLAG = cv2.WND_PROP_VISIBLE
 WINDOW_RESIZE_INTERPOLATION = cv2.INTER_AREA
@@ -17,3 +17,6 @@ INFO_THICKNESS = 2
 # color maps
 COLORIZER_CMAP = 2  # 0-Jet 1-Classic 2-WhiteToBlack 3-BlackToWhite 4-Bio 5-Cold 6-Warm 7-Quantized 8-Pattern
 BGR_TO_RGB = cv2.COLOR_BGR2RGB
+
+# RGB indices
+COLOR_INDEX = {'r': 0, 'g': 1, 'b': 2}

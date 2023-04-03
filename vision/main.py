@@ -1,31 +1,21 @@
-import constants
-import filters
+import parameters
 from pipeline import Pipeline
 from image_processor import ImageProcessor
 from display import Display
 
-# True if we are using the Jetson
-using_jetson = False
-
-# filters
-depth_frame_filters = [filters.hole_filling()]
-color_frame_filters = []
-depth_image_filters = []
-color_image_filters = []
-
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
 image_processor = ImageProcessor()  # image processing unit
-display = Display('ATC: left side warning', width=1280, displaying=not using_jetson)  # displays image and manages window
+display = Display(parameters.window_name, width=parameters.window_width, displaying=not parameters.using_jetson)  # displays image and manages window
 
 pipeline.start()
 display.start()
 try:
     # choose what filters to apply (in-order)
-    pipeline.set_depth_frame_filters(depth_frame_filters)
-    pipeline.set_color_frame_filters(depth_frame_filters)
-    image_processor.set_depth_image_filters(depth_image_filters)
-    image_processor.set_color_image_filters(color_image_filters)
+    pipeline.set_depth_frame_filters(parameters.depth_frame_filters)
+    pipeline.set_color_frame_filters(parameters.depth_frame_filters)
+    image_processor.set_depth_image_filters(parameters.depth_image_filters)
+    image_processor.set_color_image_filters(parameters.color_image_filters)
 
     # main loop
     while (not display.isWindowClosed()):
@@ -47,7 +37,7 @@ try:
         # display informations
 
         # diplay in window
-        display.show(image_processor.color_image)
+        display.show(image_processor.depth_image)
 
 finally:
     display.stop()
