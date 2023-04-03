@@ -78,9 +78,15 @@ class ImageProcessor:
             cv2.rectangle(self.depth_image, (xmin, ymin), (xmax, ymax), constants.BBOX_COLOR, constants.BBOX_THICKNESS)
 
             # add text over bbox to both images
-            cv2.putText(self.color_image, "{0:.3} m.".format(dist), 
-                            (xmin, ymin - 5),
-                            cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0))
-            cv2.putText(self.depth_image, "{0:.3} m.".format(dist), 
-                            (xmin, ymin - 5),
-                            cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0))
+            cv2.putText(self.color_image,
+                         f'{dist:.2f} m',
+                        (xmin, ymin - constants.BBOX_TEXT_OFFSET),
+                        constants.BBOX_FONT,
+                        constants.BBOX_TEXT_THICKNESS,
+                        constants.BBOX_COLOR)
+            cv2.putText(self.depth_image,
+                        f'{dist:.2f} m',
+                        (xmin, ymin - constants.BBOX_TEXT_OFFSET),
+                        constants.BBOX_FONT,
+                        constants.BBOX_TEXT_THICKNESS,
+                        constants.BBOX_COLOR)

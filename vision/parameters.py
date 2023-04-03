@@ -7,6 +7,10 @@ using_jetson = False
 window_width = 1280
 window_name = 'ATC: left side warning'
 
+# alert
+alert_dist = 0.4 # alert distance (in meters)
+alert_msg = 'ALERTE'
+
 # filter parameters
 threshold = 230
 min_blob_size = 10000

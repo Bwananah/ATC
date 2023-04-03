@@ -1,12 +1,14 @@
 import cv2
 import constants
 import keyboard
+import parameters
 
 class Display():
     def __init__(self, name, width, displaying):
         self.name = name  # window name
         self.width = width  # window width
         self.displaying = displaying  # True if we want to display to a screen, False if we don't
+        self.alert = False  # True if need to display alert message
 
     # create window
     def start(self):
@@ -22,6 +24,18 @@ class Display():
     def show(self, image):
         if self.displaying:
             img = self.resizeWithAspectRatio(image)
+
+            # show alert message if needed
+            if self.alert:
+                img = cv2.putText(img,
+                                  f'{parameters.alert_msg}',
+                                  constants.INFO_POS,
+                                  constants.INFO_FONT,
+                                  constants.INFO_SIZE,
+                                  constants.INFO_COLOR,
+                                  constants.INFO_THICKNESS,
+                                  constants.LINE_TYPE)
+
             cv2.imshow(self.name, img)
 
     # check if user wants to close the window (ESC key or manually closing window)
