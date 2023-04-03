@@ -4,7 +4,7 @@ from display import Display
 
 # create objects
 pipeline = Pipeline()
-display = Display(constants.WINDOW_NAME)
+display = Display(constants.WINDOW_NAME, width=1280)
 
 
 pipeline.start()
@@ -29,7 +29,7 @@ try:
         # display informations
 
         # diplay in window
-        display.show(depth_image)
+        display.show(color_image)
 
 finally:
     display.stop()
