@@ -24,6 +24,8 @@ try:
     # choose what filters to apply (in-order)
     pipeline.set_depth_frame_filters(depth_frame_filters)
     pipeline.set_color_frame_filters(depth_frame_filters)
+    image_processor.set_depth_image_filters(depth_image_filters)
+    image_processor.set_color_image_filters(color_image_filters)
 
     # main loop
     while (not display.isWindowClosed()):
@@ -38,13 +40,14 @@ try:
         image_processor.update_images(depth_image, color_image)
 
         # apply image-level filters
+        image_processor.apply_filters()
 
         # make bounding boxes
 
         # display informations
 
         # diplay in window
-        display.show(image_processor.depth_image)
+        display.show(image_processor.color_image)
 
 finally:
     display.stop()
