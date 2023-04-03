@@ -13,6 +13,9 @@ class Pipeline():
 
         self.depth_frame = None  # current depth frame
         self.color_frame = None  # current color frame
+
+        self.depth_frame_filters = []  # filters to apply to the depth frame (in-order)
+        self.color_frame_filters = []  # filters to apply to the color frame (in-order)
     
     # make pipeline start fetching frames
     def start(self):
@@ -46,3 +49,19 @@ class Pipeline():
         color = cv2.cvtColor(color, constants.BGR_TO_RGB)  # change image colors from BGR TO RGB
 
         return depth, color
+    
+    # Set the filters to apply to the depth frame (in-order)
+    def set_depth_frame_filters(self, filters):
+        self.depth_frame_filters = filters
+    
+    # Set the filters to apply to the color frame (in-order)
+    def set_color_frame_filters(self, filters):
+        self.color_frame_filters = filters
+    
+    # apply all filters in-order to both frames
+    def apply_filters(self):
+        for filter in self.depth_frame_filters:
+            self.depth_frame = filter(self.depth_frame)
+        
+        for filter in self.color_frame_filters:
+            self.color_frame = filter(self.color_frame)

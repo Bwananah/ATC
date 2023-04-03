@@ -26,19 +26,22 @@ class Display():
 
     # check if user wants to close the window (ESC key or manually closing window)
     def isWindowClosed(self, verbose=True):
-        # if displaying, check if window was closed
         if self.displaying:
+            # if displaying, check if window was closed
             key = cv2.waitKey(1)  # Get user key press
 
             # check if user closed the window
             if key == constants.WINDOW_ESC_KEY or cv2.getWindowProperty(self.name, constants.WINDOW_STATE_FLAG) < 1: 
                 if verbose:       
                     print('Window was closed')
+
                 return True
-        else:  # if not displaying, check if program needs to stop
+        else:
+            # if not displaying, check if program needs to stop
             if keyboard.is_pressed(constants.CONSOLE_ESC_KEY):
                 if verbose:       
                     print('Program was stopped')
+
                 return True
         
         return False
