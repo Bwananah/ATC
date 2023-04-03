@@ -36,7 +36,7 @@ try:
         # find blobs
         image_processor.find_blobs(parameters.min_blob_size)
 
-        # make bounding boxes
+        # make bounding boxes around blobs (and save distances to those blobs)
         image_processor.make_bounding_boxes(pipeline.get_camera_depths(), pipeline.get_depth_scale())
 
         # check distance to nearest object, alert if closer than alert distance
@@ -44,12 +44,9 @@ try:
         for dist_to_blob in image_processor.distances:
             if dist_to_blob < parameters.alert_dist:
                 alert = True
-        
-        # display alert message
-        display.alert = alert
 
         # diplay in window
-        display.show(image_processor.depth_image)
+        display.show(image_processor.get_images(parameters.display_type), alert)
 
 finally:
     display.stop()

@@ -90,3 +90,13 @@ class ImageProcessor:
                         constants.BBOX_FONT,
                         constants.BBOX_TEXT_THICKNESS,
                         constants.BBOX_COLOR)
+        
+    # get images depending on display type
+    def get_images(self, type):
+        if type == 'color':
+            return self.color_image
+        elif type == 'depth':
+            return self.depth_image
+        else:
+            # 'both'
+            return np.vstack((self.color_image, self.depth_image))

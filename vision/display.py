@@ -8,7 +8,6 @@ class Display():
         self.name = name  # window name
         self.width = width  # window width
         self.displaying = displaying  # True if we want to display to a screen, False if we don't
-        self.alert = False  # True if need to display alert message
 
     # create window
     def start(self):
@@ -21,12 +20,13 @@ class Display():
             cv2.destroyAllWindows()
     
     # show image on display
-    def show(self, image):
+    def show(self, image, alert):
         if self.displaying:
+            # resize image
             img = self.resizeWithAspectRatio(image)
 
             # show alert message if needed
-            if self.alert:
+            if alert:
                 img = cv2.putText(img,
                                   f'{parameters.alert_msg}',
                                   constants.INFO_POS,
@@ -39,23 +39,19 @@ class Display():
             cv2.imshow(self.name, img)
 
     # check if user wants to close the window (ESC key or manually closing window)
-    def isWindowClosed(self, verbose=True):
+    def isWindowClosed(self):
         if self.displaying:
             # if displaying, check if window was closed
             key = cv2.waitKey(1)  # Get user key press
 
             # check if user closed the window
-            if key == constants.WINDOW_ESC_KEY or cv2.getWindowProperty(self.name, constants.WINDOW_STATE_FLAG) < 1: 
-                if verbose:       
-                    print('Window was closed')
-
+            if key == constants.WINDOW_ESC_KEY or cv2.getWindowProperty(self.name, constants.WINDOW_STATE_FLAG) < 1:       
+                print('Window was closed')
                 return True
         else:
             # if not displaying, check if program needs to stop
-            if keyboard.is_pressed(constants.CONSOLE_ESC_KEY):
-                if verbose:       
-                    print('Program was stopped')
-
+            if keyboard.is_pressed(constants.CONSOLE_ESC_KEY):      
+                print('Program was stopped')
                 return True
         
         return False
