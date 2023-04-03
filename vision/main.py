@@ -32,12 +32,16 @@ try:
         # apply image-level filters
         image_processor.apply_filters()
 
+        # find blobs
+        image_processor.find_blobs(parameters.min_blob_size)
+
         # make bounding boxes
+        image_processor.make_bounding_boxes()
 
         # display informations
 
         # diplay in window
-        display.show(image_processor.depth_image)
+        display.show(image_processor.color_image)
 
 finally:
     display.stop()
