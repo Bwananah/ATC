@@ -27,6 +27,18 @@ class Display():
 
             # show alert message if needed
             if alert:
+                # background
+                text_size = cv2.getTextSize(f'{parameters.alert_msg}',
+                                                          constants.INFO_FONT,
+                                                          constants.INFO_SIZE,
+                                                          constants.INFO_THICKNESS)
+                img = cv2.rectangle(img,
+                                    (constants.INFO_POS[0], constants.INFO_POS[1] + 5),
+                                    (constants.INFO_POS[0] + text_size[0][0], constants.INFO_POS[1] - text_size[0][1] - 5),
+                                    constants.INFO_BACKGROUND,
+                                    -1)
+                
+                # text
                 img = cv2.putText(img,
                                   f'{parameters.alert_msg}',
                                   constants.INFO_POS,

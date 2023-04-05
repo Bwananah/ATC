@@ -4,12 +4,12 @@ import filters
 using_jetson = False
 
 # window parameters
-window_width = 1280
+window_width = 600
 window_name = 'ATC: left side warning'
-display_type = 'color'  # 'color', 'depth' or 'both'
+display_type = 'both'  # 'color', 'depth' or 'both'
 
 # alert
-alert_dist = 0.4 # alert distance (in meters)
+alert_dist = 0.8 # alert distance (in meters)
 alert_msg = 'ALERTE'
 
 # filter parameters
