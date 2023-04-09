@@ -1,6 +1,7 @@
 import pyrealsense2 as rs
 import numpy as np
 import cv2
+import RPi.GPIO as GPIO
 from skimage import measure, color
 
 def remove_noise(cc_ids,threshold):
@@ -41,6 +42,10 @@ INFO_THICKNESS = 2
 THRESHOLD = 230
 BLOB_SIZE_THRESHOLD = 10000
 
+GREEN_LED = 11
+RED_LED = 12
+ORANGE_LED = 13 
+
 alert_cnt = 0
 
 # Create a context object. This object owns the handles to all connected realsense devices
@@ -55,7 +60,15 @@ align = rs.align(align_to)
 profile = pipeline.start()
 
 try:
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(GREEN_LED, GPIO.OUT)
+    GPIO.setup(RED_LED, GPIO.OUT)
+    GPIO.setup(ORANGE_LED, GPIO.OUT)
+
+    GPIO.output(RED_LED, GPIO.HIGH)
     while True:
+        GPIO.output(ORANGE_LED, GPIO.HIGH)
+        
         # Create a pipeline object. This object configures the streaming camera and owns it's handle
         frames = pipeline.wait_for_frames()
         aligned_frames = align.process(frames)
@@ -87,6 +100,10 @@ try:
         # Make bounding box and print distance to blob
         depth = np.asanyarray(depth_frame.get_data())
         alerte = False
+
+
+        GPIO.output(ORANGE_LED, GPIO.LOW)
+
         for i in np.unique(denoised)[1:]:
             # bbox
             indices = np.where(denoised == i) # indices where that blob was found
@@ -111,8 +128,11 @@ try:
         if alerte: 
             info = "ALERTE"
             alert_cnt += 1
+            GPIO.output(GREEN_LED, GPIO.HIGH)
             # print Alert + number of times
             print(info, alert_cnt)
+        else:
+            GPIO.output(GREEN_LED, GPIO.LOW)
                        
         #test = cv2.putText(color, f'{info}', INFO_POS, INFO_FONT, INFO_SIZE, INFO_COLOR, INFO_THICKNESS, cv2.LINE_AA)
 
