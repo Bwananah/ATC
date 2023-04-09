@@ -41,6 +41,8 @@ INFO_THICKNESS = 2
 THRESHOLD = 230
 BLOB_SIZE_THRESHOLD = 10000
 
+alert_cnt = 0
+
 # Create a context object. This object owns the handles to all connected realsense devices
 pipeline = rs.pipeline()
 colorizer = rs.colorizer(2) # white-to-black
@@ -108,23 +110,26 @@ try:
         info = ""
         if alerte: 
             info = "ALERTE"
-            print("ALERTE")
-        test = cv2.putText(color, f'{info}', INFO_POS, INFO_FONT, INFO_SIZE, INFO_COLOR, INFO_THICKNESS, cv2.LINE_AA)
+            alert_cnt += 1
+            # print Alert + number of times
+            print(info, alert_cnt)
+                       
+        #test = cv2.putText(color, f'{info}', INFO_POS, INFO_FONT, INFO_SIZE, INFO_COLOR, INFO_THICKNESS, cv2.LINE_AA)
 
         # Show image
-        cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
+        #cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
         #image = np.vstack((color, test))
         image = color
-        imS = ResizeWithAspectRatio(image, width=1280) # resize window
-        cv2.imshow('RealSense', imS)
-        key = cv2.waitKey(1)
+        #imS = ResizeWithAspectRatio(image, width=1280) # resize window
+        #cv2.imshow('RealSense', imS)
+        #key = cv2.waitKey(1)
 
         # Check if window was closed (can use ESC)
-        if key == 27 or cv2.getWindowProperty('RealSense',cv2.WND_PROP_VISIBLE) < 1:        
-            print('Window was closed')
-            cv2.destroyAllWindows()
-            break
+        #if key == 27 or cv2.getWindowProperty('RealSense',cv2.WND_PROP_VISIBLE) < 1:        
+        #    print('Window was closed')
+        #    cv2.destroyAllWindows()
+        #    break
 
-finally:
-    cv2.destroyAllWindows()
-    pipeline.stop()
+#finally:
+#    cv2.destroyAllWindows()
+#    pipeline.stop()
