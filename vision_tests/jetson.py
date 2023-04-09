@@ -130,6 +130,6 @@ try:
         #    cv2.destroyAllWindows()
         #    break
 
-#finally:
+finally:
 #    cv2.destroyAllWindows()
-#    pipeline.stop()
+    pipeline.stop()
