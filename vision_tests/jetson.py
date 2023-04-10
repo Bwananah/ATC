@@ -102,7 +102,7 @@ try:
         # Make bounding box and print distance to blob
         depth = np.asanyarray(depth_frame.get_data())
 
-
+        alerte = False
         GPIO.output(ORANGE_LED, True)
         for i in np.unique(denoised)[1:]:
             # bbox
