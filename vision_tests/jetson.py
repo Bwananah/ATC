@@ -43,7 +43,7 @@ THRESHOLD = 230
 BLOB_SIZE_THRESHOLD = 10000
 
 GREEN_LED = 12
-RED_LED = 11
+RED_LED = 15
 ORANGE_LED = 13
 
 alert_cnt = 0
@@ -60,7 +60,6 @@ align = rs.align(align_to)
 profile = pipeline.start()
 
 try:
-    GPIO.cleanup()
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(GREEN_LED, GPIO.OUT)
     GPIO.setup(RED_LED, GPIO.OUT)
