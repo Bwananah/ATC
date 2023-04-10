@@ -122,6 +122,7 @@ try:
             dist = np.mean(dist)
             if dist < 0.4: # Alert if closer than 40 cm
                 alerte = True
+                break
             cv2.putText(color, "{0:.3} m.".format(dist), 
                             (xmin, ymin - 5),
                             cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0)) # text
