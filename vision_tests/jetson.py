@@ -148,6 +148,7 @@ try:
             audio_file.rewind()
             while True:
                 data = audio_file.readframes(1024)
+                print(data)
                 if not data:
                     break
                 output_device.write(data)
