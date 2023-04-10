@@ -79,11 +79,11 @@ try:
         format = audio_file.getsampwidth()
 
         # Open the audio card for playback
-        playback_device = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK)
-        playback_device.setchannels(channels)
-        playback_device.setrate(sample_rate)
-        playback_device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
-        playback_device.setperiodsize(1024)
+        output_device = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK)
+        output_device.setchannels(audio_file.getnchannels())
+        output_device.setrate(audio_file.getframerate())
+        output_device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
+        output_device.setperiodsize(1024)
         
         # Create a pipeline object. This object configures the streaming camera and owns it's handle
         frames = pipeline.wait_for_frames()
@@ -146,9 +146,8 @@ try:
             info = "ALERTE"
             alert_cnt += 1            
             data = audio_file.readframes(1024)
-            while data:
-                playback_device.write(data)
-                data = audio_file.readframes(1024)
+            output_device.write(data)
+
             print(info, alert_cnt)
         
 
@@ -157,4 +156,5 @@ finally:
     pipeline.stop()
     GPIO.output(GREEN_LED, False)
     GPIO.cleanup()
-    playback_device.close()
+    output_device.close()
+    audio_file.close()
