@@ -71,6 +71,7 @@ try:
     GPIO.output(GREEN_LED, True)
     
     alerte = False
+    cnt = 0
 
     while True:
 
@@ -155,6 +156,9 @@ try:
 
             print(info, alert_cnt)
         
+        cnt += 1
+        print("No alerte", cnt)
+        
 
 finally:
 #    cv2.destroyAllWindows()
@@ -163,3 +167,4 @@ finally:
     GPIO.cleanup()
     output_device.close()
     audio_file.close()
+    print("Finished")
