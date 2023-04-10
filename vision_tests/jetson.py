@@ -40,7 +40,7 @@ INFO_COLOR = (255, 255, 255)
 INFO_THICKNESS = 2
 
 THRESHOLD = 230
-BLOB_SIZE_THRESHOLD = 10000
+BLOB_SIZE_THRESHOLD = 5000
 
 GREEN_LED = 12
 RED_LED = 11
@@ -96,8 +96,8 @@ try:
         denoised = remove_noise(labels, BLOB_SIZE_THRESHOLD) # Only get blobs bigger than threshold
             
         # convert back to color
-        test = np.where(denoised > 0, 255, 0).astype(np.uint8)
-        test = cv2.merge((test,test,test)) # one channel to 3
+        #test = np.where(denoised > 0, 255, 0).astype(np.uint8)
+        #test = cv2.merge((test,test,test)) # one channel to 3
 
         # Make bounding box and print distance to blob
         depth = np.asanyarray(depth_frame.get_data())
