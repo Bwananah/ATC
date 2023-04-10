@@ -84,6 +84,8 @@ try:
     output_device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
     output_device.setperiodsize(1024)
 
+    print("Starting....")
+
     while True:
         # Create a pipeline object. This object configures the streaming camera and owns it's handle
         frames = pipeline.wait_for_frames()
@@ -148,7 +150,6 @@ try:
             audio_file.rewind()
             while True:
                 data = audio_file.readframes(1024)
-                print(data)
                 if not data:
                     break
                 output_device.write(data)
