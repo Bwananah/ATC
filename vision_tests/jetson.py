@@ -40,7 +40,7 @@ INFO_COLOR = (255, 255, 255)
 INFO_THICKNESS = 2
 
 THRESHOLD = 230
-BLOB_SIZE_THRESHOLD = 5000
+BLOB_SIZE_THRESHOLD = 10000
 
 GREEN_LED = 12
 RED_LED = 11
@@ -66,8 +66,9 @@ try:
     GPIO.setup(RED_LED, GPIO.OUT)
     GPIO.setup(ORANGE_LED, GPIO.OUT)
 
-    GPIO.output(GREEN_LED, GPIO.HIGH)
+    GPIO.output(GREEN_LED, True)
     
+    alerte = False
 
     while True:
         
@@ -101,10 +102,9 @@ try:
 
         # Make bounding box and print distance to blob
         depth = np.asanyarray(depth_frame.get_data())
-        alerte = False
 
 
-        GPIO.output(ORANGE_LED, GPIO.HIGH)
+        GPIO.output(ORANGE_LED, True)
         for i in np.unique(denoised)[1:]:
             # bbox
             indices = np.where(denoised == i) # indices where that blob was found
@@ -124,17 +124,17 @@ try:
             cv2.putText(color, "{0:.3} m.".format(dist), 
                             (xmin, ymin - 5),
                             cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0)) # text
-        GPIO.output(ORANGE_LED, GPIO.LOW)        
+        
+        GPIO.output(ORANGE_LED, False)        
         # display information on screen
         info = ""
-        if alerte: 
+        GPIO.output(RED_LED, alerte)
+        if alerte == True: 
             info = "ALERTE"
             alert_cnt += 1
-            GPIO.output(RED_LED, GPIO.HIGH)
+            
             # print Alert + number of times
             print(info, alert_cnt)
-        else:
-            GPIO.output(RED_LED, GPIO.LOW)
                        
         #test = cv2.putText(color, f'{info}', INFO_POS, INFO_FONT, INFO_SIZE, INFO_COLOR, INFO_THICKNESS, cv2.LINE_AA)
 
@@ -155,3 +155,5 @@ try:
 finally:
 #    cv2.destroyAllWindows()
     pipeline.stop()
+    GPIO.output(GREEN_LED, False)
+    GPIO.cleanup()
