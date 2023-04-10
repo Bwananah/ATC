@@ -73,19 +73,18 @@ try:
     alerte = False
     cnt = 0
 
+    channels = audio_file.getnchannels()
+    sample_rate = audio_file.getframerate()
+    format = audio_file.getsampwidth()
+
+    # Open the audio card for playback
+    output_device = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK)
+    output_device.setchannels(audio_file.getnchannels())
+    output_device.setrate(audio_file.getframerate())
+    output_device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
+    output_device.setperiodsize(1024)
+
     while True:
-
-        channels = audio_file.getnchannels()
-        sample_rate = audio_file.getframerate()
-        format = audio_file.getsampwidth()
-
-        # Open the audio card for playback
-        output_device = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK)
-        output_device.setchannels(audio_file.getnchannels())
-        output_device.setrate(audio_file.getframerate())
-        output_device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
-        output_device.setperiodsize(1024)
-        
         # Create a pipeline object. This object configures the streaming camera and owns it's handle
         frames = pipeline.wait_for_frames()
         aligned_frames = align.process(frames)
