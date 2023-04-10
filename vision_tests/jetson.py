@@ -144,12 +144,13 @@ try:
         GPIO.output(RED_LED, alerte)
         if alerte == True: 
             info = "ALERTE"
-            alert_cnt += 1            
-            data = audio_file.readframes(1024)
-            if not data:
-                audio_file.rewind()
+            alert_cnt += 1           
+            audio_file.rewind()
+            while True:
                 data = audio_file.readframes(1024)
-            output_device.write(data)
+                if not data:
+                    break
+                output_device.write(data)
 
             print(info, alert_cnt)
         
