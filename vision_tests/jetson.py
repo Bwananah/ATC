@@ -70,7 +70,6 @@ try:
     
 
     while True:
-        GPIO.output(ORANGE_LED, GPIO.HIGH)
         
         # Create a pipeline object. This object configures the streaming camera and owns it's handle
         frames = pipeline.wait_for_frames()
@@ -105,8 +104,7 @@ try:
         alerte = False
 
 
-        GPIO.output(ORANGE_LED, GPIO.LOW)
-
+        GPIO.output(ORANGE_LED, GPIO.HIGH)
         for i in np.unique(denoised)[1:]:
             # bbox
             indices = np.where(denoised == i) # indices where that blob was found
@@ -126,7 +124,7 @@ try:
             cv2.putText(color, "{0:.3} m.".format(dist), 
                             (xmin, ymin - 5),
                             cv2.FONT_HERSHEY_COMPLEX, 0.5, (0,255,0)) # text
-        
+        GPIO.output(ORANGE_LED, GPIO.LOW)        
         # display information on screen
         info = ""
         if alerte: 
