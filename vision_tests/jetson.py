@@ -60,14 +60,8 @@ align = rs.align(align_to)
 profile = pipeline.start()
 
 try:
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(GREEN_LED, GPIO.OUT)
-    GPIO.setup(RED_LED, GPIO.OUT)
-    GPIO.setup(ORANGE_LED, GPIO.OUT)
-
-    GPIO.output(RED_LED, GPIO.HIGH)
+    
     while True:
-        GPIO.output(ORANGE_LED, GPIO.HIGH)
         
         # Create a pipeline object. This object configures the streaming camera and owns it's handle
         frames = pipeline.wait_for_frames()
@@ -102,7 +96,6 @@ try:
         alerte = False
 
 
-        GPIO.output(ORANGE_LED, GPIO.LOW)
 
         for i in np.unique(denoised)[1:]:
             # bbox
@@ -128,11 +121,9 @@ try:
         if alerte: 
             info = "ALERTE"
             alert_cnt += 1
-            GPIO.output(GREEN_LED, GPIO.HIGH)
             # print Alert + number of times
             print(info, alert_cnt)
-        else:
-            GPIO.output(GREEN_LED, GPIO.LOW)
+
                        
         #test = cv2.putText(color, f'{info}', INFO_POS, INFO_FONT, INFO_SIZE, INFO_COLOR, INFO_THICKNESS, cv2.LINE_AA)
 
