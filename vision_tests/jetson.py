@@ -3,6 +3,8 @@ import numpy as np
 import cv2
 import Jetson.GPIO as GPIO
 from skimage import measure, color
+import wave
+import alsaaudio
 
 def remove_noise(cc_ids,threshold):
 
@@ -60,6 +62,7 @@ align = rs.align(align_to)
 profile = pipeline.start()
 
 try:
+    audio_file = wave.open('voice.wav', 'rb') 
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(GREEN_LED, GPIO.OUT)
     GPIO.setup(RED_LED, GPIO.OUT)
@@ -70,6 +73,17 @@ try:
     alerte = False
 
     while True:
+
+        channels = audio_file.getnchannels()
+        sample_rate = audio_file.getframerate()
+        format = audio_file.getsampwidth()
+
+        # Open the audio card for playback
+        playback_device = alsaaudio.PCM(alsaaudio.PCM_PLAYBACK)
+        playback_device.setchannels(channels)
+        playback_device.setrate(sample_rate)
+        playback_device.setformat(alsaaudio.PCM_FORMAT_S16_LE)
+        playback_device.setperiodsize(1024)
         
         # Create a pipeline object. This object configures the streaming camera and owns it's handle
         frames = pipeline.wait_for_frames()
@@ -134,25 +148,15 @@ try:
             
             # print Alert + number of times
             print(info, alert_cnt)
-                       
-        #test = cv2.putText(color, f'{info}', INFO_POS, INFO_FONT, INFO_SIZE, INFO_COLOR, INFO_THICKNESS, cv2.LINE_AA)
-
-        # Show image
-        #cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-        #image = np.vstack((color, test))
-        image = color
-        #imS = ResizeWithAspectRatio(image, width=1280) # resize window
-        #cv2.imshow('RealSense', imS)
-        #key = cv2.waitKey(1)
-
-        # Check if window was closed (can use ESC)
-        #if key == 27 or cv2.getWindowProperty('RealSense',cv2.WND_PROP_VISIBLE) < 1:        
-        #    print('Window was closed')
-        #    cv2.destroyAllWindows()
-        #    break
+            data = audio_file.readframes(1024)
+            while data:
+                playback_device.write(data)
+                data = audio_file.readframes(1024)
+        
 
 finally:
 #    cv2.destroyAllWindows()
     pipeline.stop()
     GPIO.output(GREEN_LED, False)
     GPIO.cleanup()
+    playback_device.close()
