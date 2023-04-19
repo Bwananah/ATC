@@ -34,10 +34,10 @@ try:
         image_processor.apply_filters()
 
         # find blobs
-        image_processor.find_blobs(parameters.min_blob_size)
+        #image_processor.find_blobs(parameters.min_blob_size)
 
         # make bounding boxes around blobs (and save distances to those blobs)
-        image_processor.make_bounding_boxes(pipeline.get_camera_depths(), pipeline.get_depth_scale())
+        #image_processor.make_bounding_boxes(pipeline.get_camera_depths(), pipeline.get_depth_scale())
 
         # check distance to nearest object, alert if closer than alert distance
         alert = False

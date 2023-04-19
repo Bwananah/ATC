@@ -1,6 +1,7 @@
 import constants
 import pyrealsense2 as rs
 import numpy as np
+import cv2
 
 
 # realsense's hole filling function
@@ -9,6 +10,24 @@ def hole_filling():
 
     def filter(frame):
         return hole_filling.process(frame)
+    
+    return filter
+
+# realsense's decimation function
+def decimation(magnitude):
+    decimation = rs.decimation_filter()
+    decimation.set_option(rs.option.filter_magnitude, magnitude)
+
+    def filter(frame):
+        return decimation.process(frame)
+    
+    return filter
+
+# apply a gaussian blur 
+def gaussian_blur(kernel_size, sigma):
+
+    def filter(image):
+        return cv2.GaussianBlur(image, (kernel_size, kernel_size), sigma, constants.GAUSSIAN_BLUR_BORDER)
     
     return filter
 
