@@ -23,6 +23,18 @@ def decimation(magnitude):
     
     return filter
 
+# realsense's spatial function
+def spatial(magnitude, alpha, delta):
+    spatial = rs.spatial_filter()
+    spatial.set_option(rs.option.filter_magnitude, magnitude)
+    spatial.set_option(rs.option.filter_smooth_alpha, alpha)
+    spatial.set_option(rs.option.filter_smooth_delta, delta)
+
+    def filter(frame):
+        return spatial.process(frame)
+    
+    return filter
+
 # apply a gaussian blur 
 def gaussian_blur(kernel_size, sigma):
 
