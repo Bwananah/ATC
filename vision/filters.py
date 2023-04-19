@@ -59,9 +59,12 @@ def threshold(thresh, channel):
     index = constants.COLOR_INDEX[channel]  # get index of color channel
 
     def filter(image):
+        # stretch values so that min = 0 and max = 255
+        stretched = ((image - image.min()) / (image.max() - image.min()) * 255).astype(int)
+
         # if channel < thresh, 0 else 255
-        bin_img = np.zeros(image.shape[0:2])
-        bin_img[image[:, :, index] >= thresh] = 255
+        bin_img = np.zeros(stretched.shape[0:2])
+        bin_img[stretched[:, :, index] >= thresh] = 255
 
         return bin_img
     

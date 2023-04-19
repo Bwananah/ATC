@@ -4,9 +4,9 @@ import filters
 using_jetson = False
 
 # window parameters
-window_width = 1280
+window_width = 600
 window_name = 'ATC: left side warning'
-display_type = 'depth'  # 'color', 'depth' or 'both'
+display_type = 'both'  # 'color', 'depth' or 'both'
 
 # image cropping parameters (how much to crop from each side, in pixels)
 image_cropping = (0, 0, 0, 0)  # (left, right, top, bottom)
@@ -22,13 +22,13 @@ spatial_alpha = 0.5
 spatial_delta = 20
 temporal_alpha = 0.4
 temporal_delta = 20
-gaussian_kernel_size = 5
-gaussian_sigma = 1
+gaussian_kernel_size = 7
+gaussian_sigma = 2
 depth_threshold = 230
 min_blob_size = 10000
 
 # filters
-depth_frame_filters = []#[filters.temporal(temporal_alpha, temporal_delta)]  # decimation, spatial, temporal, hole_filling
+depth_frame_filters = []  # decimation, spatial, temporal, hole_filling
 color_frame_filters = []
-depth_image_filters = []#[filters.gaussian_blur(gaussian_kernel_size, gaussian_sigma)]#[filters.threshold(depth_threshold, 'r')]  # gaussian_blur, threshold
+depth_image_filters = [filters.gaussian_blur(gaussian_kernel_size, gaussian_sigma), filters.threshold(depth_threshold, 'r')]  # gaussian_blur, threshold
 color_image_filters = []
