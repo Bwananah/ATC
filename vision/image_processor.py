@@ -5,7 +5,7 @@ from skimage import measure
 
 
 class ImageProcessor:
-    def __init__(self):
+    def __init__(self, cropping):
         self.depth_image = None  # current depth image
         self.color_image = None  # current color image
 
@@ -15,10 +15,17 @@ class ImageProcessor:
         self.labels = []  # blob labels
         self.distances = []  # distance to each blob
 
-    # update current image
+        # image cropping
+        self.crop_left = cropping[0]
+        self.crop_right = cropping[1]
+        self.crop_top = cropping[2]
+        self.crop_bot = cropping[3]
+
+    # update current image (and crop)
     def update_images(self, depth, color):
-        self.depth_image = depth
-        self.color_image = color
+        h, w = color.shape[:2]
+        self.depth_image = depth[self.crop_top:h-self.crop_bot, self.crop_left:w-self.crop_right]
+        self.color_image = color[self.crop_top:h-self.crop_bot, self.crop_left:w-self.crop_right]
     
     # Set the filters to apply to the depth image (in-order)
     def set_depth_image_filters(self, filters):

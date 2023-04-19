@@ -8,6 +8,9 @@ window_width = 600
 window_name = 'ATC: left side warning'
 display_type = 'both'  # 'color', 'depth' or 'both'
 
+# image cropping parameters (how much to crop from each side, in pixels)
+image_cropping = (0, 0, 0, 0)  # (left, right, top, bottom)
+
 # alert
 alert_dist = 0.8 # alert distance (in meters)
 alert_msg = 'ALERTE'

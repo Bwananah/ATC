@@ -6,7 +6,7 @@ import numpy as np
 
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
-image_processor = ImageProcessor()  # image processing unit
+image_processor = ImageProcessor(parameters.image_cropping)  # image processing unit
 display = Display(parameters.window_name, width=parameters.window_width, displaying=not parameters.using_jetson)  # displays image and manages window
 
 pipeline.start()
