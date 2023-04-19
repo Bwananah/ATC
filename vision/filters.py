@@ -35,6 +35,17 @@ def spatial(magnitude, alpha, delta):
     
     return filter
 
+# realsense's temporal function
+def temporal(alpha, delta):
+    temporal = rs.temporal_filter()
+    temporal.set_option(rs.option.filter_smooth_alpha, alpha)
+    temporal.set_option(rs.option.filter_smooth_delta, delta)
+
+    def filter(frame):
+        return temporal.process(frame)
+    
+    return filter
+
 # apply a gaussian blur 
 def gaussian_blur(kernel_size, sigma):
 

@@ -20,13 +20,15 @@ decimation_magnitude = 2
 spatial_magnitude = 2
 spatial_alpha = 0.5
 spatial_delta = 20
+temporal_alpha = 0.4
+temporal_delta = 20
 gaussian_kernel_size = 5
 gaussian_sigma = 1
 depth_threshold = 230
 min_blob_size = 10000
 
 # filters
-depth_frame_filters = [filters.spatial(spatial_magnitude, spatial_alpha, spatial_delta)]  # decimation, spatial, hole_filling
+depth_frame_filters = []#[filters.temporal(temporal_alpha, temporal_delta)]  # decimation, spatial, temporal, hole_filling
 color_frame_filters = []
 depth_image_filters = []#[filters.gaussian_blur(gaussian_kernel_size, gaussian_sigma)]#[filters.threshold(depth_threshold, 'r')]  # gaussian_blur, threshold
 color_image_filters = []
