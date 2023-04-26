@@ -4,11 +4,12 @@ import random
 
 class Reminder():
     def __init__(self, interval, min_delay):
-        self.timer = None
         self.interval = interval
         self.min_delay = min_delay
+
+        self.timer = None
         self.time_when_reminded = 0
-        self.current_time = 10000
+        self.current_time = 0
         self.is_running = False
 
     def remind(self, isAlert):

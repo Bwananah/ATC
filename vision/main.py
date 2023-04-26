@@ -3,7 +3,6 @@ from pipeline import Pipeline
 from image_processor import ImageProcessor
 from display import Display
 from reminder import Reminder
-import numpy as np
 
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
