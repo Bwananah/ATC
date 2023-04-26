@@ -2,15 +2,18 @@ import parameters
 from pipeline import Pipeline
 from image_processor import ImageProcessor
 from display import Display
+from reminder import Reminder
 import numpy as np
 
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
 image_processor = ImageProcessor(parameters.image_cropping)  # image processing unit
 display = Display(parameters.window_name, width=parameters.window_width, displaying=not parameters.using_jetson)  # displays image and manages window
+reminder = Reminder(parameters.reminder_interval, parameters.reminder_min_delay)  # reminds the challenger in random intervals or when a detection occured
 
 pipeline.start()
 display.start()
+reminder.start()
 try:
     # choose what filters to apply (in-order)
     pipeline.set_depth_frame_filters(parameters.depth_frame_filters)
@@ -44,6 +47,7 @@ try:
         for dist_to_blob in image_processor.distances:
             if dist_to_blob < parameters.alert_dist:
                 alert = True
+                reminder.remind(True)
 
         # diplay in window
         display.show(image_processor.get_images(parameters.display_type), alert)
@@ -51,3 +55,4 @@ try:
 finally:
     display.stop()
     pipeline.stop()
+    reminder.stop()
