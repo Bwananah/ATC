@@ -9,10 +9,10 @@ window_name = 'ATC: left side warning'
 display_type = 'both'  # 'color', 'depth' or 'both'
 
 # image cropping parameters (how much to crop from each side, in pixels)
-image_cropping = (200, 0, 0, 100)  # (left, right, top, bottom)
+image_cropping = (300, 0, 0, 200)  # (left, right, top, bottom)
 
 # alert
-alert_dist = 2.5 # alert distance (in meters)
+alert_dist = 3.5 # alert distance (in meters)
 alert_msg = 'ALERTE'
 
 # timer
@@ -27,9 +27,9 @@ spatial_delta = 20
 temporal_alpha = 0.4
 temporal_delta = 20
 gaussian_kernel_size = 7
-gaussian_sigma = 2
-depth_threshold = 230
-min_blob_size = 10000
+gaussian_sigma = 5
+depth_threshold = 220
+min_blob_size = 8000
 
 # filters
 depth_frame_filters = [filters.hole_filling()]  # decimation, spatial, temporal, hole_filling

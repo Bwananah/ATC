@@ -77,7 +77,7 @@ class ImageProcessor:
 
             # get distance to object
             dist = depth_scale * camera_depth[blob_coords[0], blob_coords[1]].astype(float)  # convert distances to meters
-            dist = np.mean(dist)  # get mean distance to blob
+            dist = np.min(dist)  # get distance to blob
             self.distances.append(dist)  # all distances stored (in meters)
 
             # add bbox to both images
