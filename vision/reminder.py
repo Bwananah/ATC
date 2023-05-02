@@ -1,6 +1,7 @@
 import threading
 import time
 import random
+import subprocess
 
 class Reminder():
     def __init__(self, interval, min_delay):
@@ -18,9 +19,13 @@ class Reminder():
         # only notify if it's been long enough since last reminded
         if (self.current_time - self.time_when_reminded >= self.min_delay):
             if (isAlert):
-                print("Alert")
+ #               print("Alert")
+                subprocess.call(["vlc","--intf","dummy" ,"--play-and-exit", "voice.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
             else:
-                print("Reminder")
+#                print("Reminder")
+                subprocess.call(["vlc", "--intf","dummy","--play-and-exit", "voice.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
             
             # reset reminder
             self.stop()

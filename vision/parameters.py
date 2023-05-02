@@ -1,7 +1,7 @@
 import filters
 
 # True if we are using the Jetson
-using_jetson = False
+using_jetson = True
 
 # window parameters
 window_width = 600
@@ -12,12 +12,12 @@ display_type = 'both'  # 'color', 'depth' or 'both'
 image_cropping = (300, 0, 0, 200)  # (left, right, top, bottom)
 
 # alert
-alert_dist = 3.5 # alert distance (in meters)
+alert_dist = 2 # alert distance (in meters)
 alert_msg = 'ALERTE'
 
 # timer
-reminder_interval = [15, 45]  # random time interval to remind the Challenger (in seconds)
-reminder_min_delay = 5  # time until new reminder if continuously in alert state (in seconds)
+reminder_interval = [30, 75]  # random time interval to remind the Challenger (in seconds)
+reminder_min_delay = 10  # time until new reminder if continuously in alert state (in seconds)
 
 # filter parameters
 decimation_magnitude = 2

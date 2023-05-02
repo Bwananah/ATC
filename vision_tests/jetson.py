@@ -143,7 +143,9 @@ try:
         GPIO.output(ORANGE_LED, False)        
         # display information on screen
         info = ""
+
         GPIO.output(RED_LED, alerte)
+        
         if alerte == True: 
             info = "ALERTE"
             alert_cnt += 1           

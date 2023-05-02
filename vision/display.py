@@ -1,7 +1,8 @@
 import cv2
 import constants
-import keyboard
+
 import parameters
+#import keyboard
 
 class Display():
     def __init__(self, name, width, displaying):
@@ -60,11 +61,11 @@ class Display():
             if key == constants.WINDOW_ESC_KEY or cv2.getWindowProperty(self.name, constants.WINDOW_STATE_FLAG) < 1:       
                 print('Window was closed')
                 return True
-        else:
-            # if not displaying, check if program needs to stop
-            if keyboard.is_pressed(constants.CONSOLE_ESC_KEY):      
-                print('Program was stopped')
-                return True
+        #else:
+        #    # if not displaying, check if program needs to stop
+        #    if keyboard.is_pressed(constants.CONSOLE_ESC_KEY):      
+        #        print('Program was stopped')
+        #        return True
         
         return False
     
