@@ -15,6 +15,9 @@ class ImageProcessor:
         self.labels = []  # blob labels
         self.distances = []  # distance to each blob
 
+        self.width = 0
+        self.height = 0
+
         # image cropping
         self.crop_left = cropping[0]
         self.crop_right = cropping[1]
@@ -23,9 +26,9 @@ class ImageProcessor:
 
     # update current image (and crop)
     def update_images(self, depth, color):
-        h, w = color.shape[:2]
-        self.depth_image = depth[self.crop_top:h-self.crop_bot, self.crop_left:w-self.crop_right]
-        self.color_image = color[self.crop_top:h-self.crop_bot, self.crop_left:w-self.crop_right]
+        self.height, self.width = color.shape[:2]
+        self.depth_image = depth
+        self.color_image = color
     
     # Set the filters to apply to the depth image (in-order)
     def set_depth_image_filters(self, filters):
@@ -66,6 +69,10 @@ class ImageProcessor:
         # reset distances
         self.distances = []
 
+        # show detection box
+        cv2.rectangle(self.color_image, (self.crop_left, self.crop_top), (self.width-self.crop_right, self.height-self.crop_bot), constants.DETECTION_COLOR, constants.BBOX_THICKNESS)
+        cv2.rectangle(self.depth_image, (self.crop_left, self.crop_top), (self.width-self.crop_right, self.height-self.crop_bot), constants.DETECTION_COLOR, constants.BBOX_THICKNESS)
+
         # for each blob
         for i in np.unique(self.labels)[1:]:
             # get corners of bbox
@@ -75,28 +82,30 @@ class ImageProcessor:
             ymin = np.min(blob_coords[0])
             ymax = np.max(blob_coords[0])
 
-            # get distance to object
-            dist = depth_scale * camera_depth[blob_coords[0], blob_coords[1]].astype(float)  # convert distances to meters
-            dist = np.min(dist)  # get distance to blob
-            self.distances.append(dist)  # all distances stored (in meters)
-
             # add bbox to both images
             cv2.rectangle(self.color_image, (xmin, ymin), (xmax, ymax), constants.BBOX_COLOR, constants.BBOX_THICKNESS)
             cv2.rectangle(self.depth_image, (xmin, ymin), (xmax, ymax), constants.BBOX_COLOR, constants.BBOX_THICKNESS)
 
-            # add text over bbox to both images
-            cv2.putText(self.color_image,
-                         f'{dist:.2f} m',
-                        (xmin, ymin - constants.BBOX_TEXT_OFFSET),
-                        constants.BBOX_FONT,
-                        constants.BBOX_TEXT_THICKNESS,
-                        constants.BBOX_COLOR)
-            cv2.putText(self.depth_image,
-                        f'{dist:.2f} m',
-                        (xmin, ymin - constants.BBOX_TEXT_OFFSET),
-                        constants.BBOX_FONT,
-                        constants.BBOX_TEXT_THICKNESS,
-                        constants.BBOX_COLOR)
+            # check if blob overlaps with detection box
+            if not (xmin > self.width-self.crop_right or xmax < self.crop_left or ymin > self.height-self.crop_top or ymax < self.crop_bot):
+                # get distance to object
+                dist = depth_scale * camera_depth[blob_coords[0], blob_coords[1]].astype(float)  # convert distances to meters
+                dist = np.min(dist)  # get distance to blob
+                self.distances.append(dist)  # all distances stored (in meters)
+
+                # add text over bbox to both images
+                cv2.putText(self.color_image,
+                            f'{dist:.2f} m',
+                            (xmin, ymin - constants.BBOX_TEXT_OFFSET),
+                            constants.BBOX_FONT,
+                            constants.BBOX_TEXT_THICKNESS,
+                            constants.BBOX_COLOR)
+                cv2.putText(self.depth_image,
+                            f'{dist:.2f} m',
+                            (xmin, ymin - constants.BBOX_TEXT_OFFSET),
+                            constants.BBOX_FONT,
+                            constants.BBOX_TEXT_THICKNESS,
+                            constants.BBOX_COLOR)
         
     # get images depending on display type
     def get_images(self, type):

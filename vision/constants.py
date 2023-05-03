@@ -16,6 +16,7 @@ COLOR_INDEX = {'r': 0, 'g': 1, 'b': 2}
 
 # image processing
 BBOX_COLOR = (0, 255, 0)
+DETECTION_COLOR = (0, 0, 255)
 BBOX_THICKNESS = 2
 BBOX_FONT = cv2.FONT_HERSHEY_COMPLEX
 BBOX_TEXT_OFFSET = 5

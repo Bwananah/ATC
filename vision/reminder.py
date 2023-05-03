@@ -19,12 +19,12 @@ class Reminder():
         # only notify if it's been long enough since last reminded
         if (self.current_time - self.time_when_reminded >= self.min_delay):
             if (isAlert):
- #               print("Alert")
-                subprocess.call(["vlc","--intf","dummy" ,"--play-and-exit", "voice.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                print("Alert")
+#                subprocess.call(["vlc","--intf","dummy" ,"--play-and-exit", "voice.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
             else:
-#                print("Reminder")
-                subprocess.call(["vlc", "--intf","dummy","--play-and-exit", "voice.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                print("Reminder")
+#                subprocess.call(["vlc", "--intf","dummy","--play-and-exit", "voice.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
             
             # reset reminder
