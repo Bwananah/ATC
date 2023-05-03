@@ -69,3 +69,10 @@ def threshold(thresh, channel):
         return bin_img
     
     return filter
+
+def bilateral(d, sigma_color, sigma_dist):
+
+    def filter(image):
+        return cv2.bilateralFilter(image, d, sigma_color, sigma_dist)
+    
+    return filter

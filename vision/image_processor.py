@@ -90,7 +90,7 @@ class ImageProcessor:
             if not (xmin > self.width-self.crop_right or xmax < self.crop_left or ymin > self.height-self.crop_top or ymax < self.crop_bot):
                 # get distance to object
                 dist = depth_scale * camera_depth[blob_coords[0], blob_coords[1]].astype(float)  # convert distances to meters
-                dist = np.min(dist)  # get distance to blob
+                dist = np.mean(dist)  # get distance to blob
                 self.distances.append(dist)  # all distances stored (in meters)
 
                 # add text over bbox to both images
