@@ -5,7 +5,7 @@ from skimage import measure
 
 
 class ImageProcessor:
-    def __init__(self, cropping):
+    def __init__(self, detect_cropping, image_cropping):
         self.depth_image = None  # current depth image
         self.color_image = None  # current color image
 
@@ -19,16 +19,21 @@ class ImageProcessor:
         self.height = 0
 
         # image cropping
-        self.crop_left = cropping[0]
-        self.crop_right = cropping[1]
-        self.crop_top = cropping[2]
-        self.crop_bot = cropping[3]
+        self.detect_crop_left = detect_cropping[0]
+        self.detect_crop_right = detect_cropping[1]
+        self.detect_crop_top = detect_cropping[2]
+        self.detect_crop_bot = detect_cropping[3]
+
+        self.image_crop_left = image_cropping[0]
+        self.image_crop_right = image_cropping[1]
+        self.image_crop_top = image_cropping[2]
+        self.image_crop_bot = image_cropping[3]
 
     # update current image (and crop)
     def update_images(self, depth, color):
         self.height, self.width = color.shape[:2]
-        self.depth_image = depth
-        self.color_image = color
+        self.depth_image = depth[self.image_crop_bot:self.height - self.image_crop_top, self.image_crop_left:self.width - self.image_crop_right]
+        self.color_image = color[self.image_crop_bot:self.height - self.image_crop_top, self.image_crop_left:self.width - self.image_crop_right]
     
     # Set the filters to apply to the depth image (in-order)
     def set_depth_image_filters(self, filters):
@@ -70,8 +75,8 @@ class ImageProcessor:
         self.distances = []
 
         # show detection box
-        cv2.rectangle(self.color_image, (self.crop_left, self.crop_top), (self.width-self.crop_right, self.height-self.crop_bot), constants.DETECTION_COLOR, constants.BBOX_THICKNESS)
-        cv2.rectangle(self.depth_image, (self.crop_left, self.crop_top), (self.width-self.crop_right, self.height-self.crop_bot), constants.DETECTION_COLOR, constants.BBOX_THICKNESS)
+        cv2.rectangle(self.color_image, (self.detect_crop_left, self.detect_crop_top), (self.width-self.detect_crop_right, self.height-self.detect_crop_bot), constants.DETECTION_COLOR, constants.BBOX_THICKNESS)
+        cv2.rectangle(self.depth_image, (self.detect_crop_left, self.detect_crop_top), (self.width-self.detect_crop_right, self.height-self.detect_crop_bot), constants.DETECTION_COLOR, constants.BBOX_THICKNESS)
 
         # for each blob
         for i in np.unique(self.labels)[1:]:
@@ -87,7 +92,7 @@ class ImageProcessor:
             cv2.rectangle(self.depth_image, (xmin, ymin), (xmax, ymax), constants.BBOX_COLOR, constants.BBOX_THICKNESS)
 
             # check if blob overlaps with detection box
-            if not (xmin > self.width-self.crop_right or xmax < self.crop_left or ymin > self.height-self.crop_top or ymax < self.crop_bot):
+            if not (xmin > self.width-self.detect_crop_right or xmax < self.detect_crop_left or ymin > self.height-self.detect_crop_top or ymax < self.detect_crop_bot):
                 # get distance to object
                 dist = depth_scale * camera_depth[blob_coords[0], blob_coords[1]].astype(float)  # convert distances to meters
                 dist = np.mean(dist)  # get distance to blob

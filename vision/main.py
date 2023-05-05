@@ -6,7 +6,7 @@ from reminder import Reminder
 
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
-image_processor = ImageProcessor(parameters.image_cropping)  # image processing unit
+image_processor = ImageProcessor(parameters.detection_cropping, parameters.image_cropping)  # image processing unit
 display = Display(parameters.window_name, width=parameters.window_width, displaying=not parameters.using_jetson)  # displays image and manages window
 reminder = Reminder(parameters.reminder_interval, parameters.reminder_min_delay)  # reminds the challenger in random intervals or when a detection occured
 
