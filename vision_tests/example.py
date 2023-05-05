@@ -11,7 +11,7 @@ INFO_THICKNESS = 2
 
 # Create a context object. This object owns the handles to all connected realsense devices
 pipeline = rs.pipeline()
-colorizer = rs.colorizer()
+colorizer = rs.colorizer(2)
 hole_filling = rs.hole_filling_filter()
 
 pipeline.start()
@@ -26,10 +26,12 @@ try:
         # Use filter(s)
         #filled_depth = hole_filling.process(depth)
         depth_colormap = np.asanyarray(colorizer.colorize(depth).get_data())
+        #
+        depth_colormap = cv2.bilateralFilter(depth_colormap, 15, 75, 75)
+        #depth_colormap = cv2.GaussianBlur(depth_colormap, (3, 3), 2, cv2.BORDER_DEFAULT)
 
-        # display information on screen
-        info = np.max(depth_colormap)
-        depth_colormap = cv2.putText(depth_colormap, f'{info}', INFO_POS, INFO_FONT, INFO_SIZE, INFO_COLOR, INFO_THICKNESS, cv2.LINE_AA)
+        
+        
 
         # Show image
         cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)

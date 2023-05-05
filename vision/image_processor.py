@@ -101,13 +101,13 @@ class ImageProcessor:
                 # add text over bbox to both images
                 cv2.putText(self.color_image,
                             f'{dist:.2f} m',
-                            (xmin, ymin - constants.BBOX_TEXT_OFFSET),
+                            (xmin + constants.BBOX_TEXT_OFFSET, ymin + constants.BBOX_TEXT_OFFSET),
                             constants.BBOX_FONT,
                             constants.BBOX_TEXT_THICKNESS,
                             constants.BBOX_COLOR)
                 cv2.putText(self.depth_image,
                             f'{dist:.2f} m',
-                            (xmin, ymin - constants.BBOX_TEXT_OFFSET),
+                            (xmin + constants.BBOX_TEXT_OFFSET, ymin + constants.BBOX_TEXT_OFFSET),
                             constants.BBOX_FONT,
                             constants.BBOX_TEXT_THICKNESS,
                             constants.BBOX_COLOR)

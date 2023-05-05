@@ -20,6 +20,7 @@ class Pipeline():
     # make pipeline start fetching frames
     def start(self):
         self.profile = self.pipeline.start()
+        self.profile.get_device().query_sensors()[0].set_option(rs.option.laser_power, 360) # set laser power (in mW)
     
     # clean up
     def stop(self):
