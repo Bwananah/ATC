@@ -3,6 +3,10 @@ from pipeline import Pipeline
 from image_processor import ImageProcessor
 from display import Display
 from reminder import Reminder
+import subprocess
+
+subprocess.call(["/usr/bin/vlc", "--intf","dummy","--play-and-exit", "Voices/voice0.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
 
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
@@ -19,9 +23,10 @@ try:
     pipeline.set_color_frame_filters(parameters.depth_frame_filters)
     image_processor.set_depth_image_filters(parameters.depth_image_filters)
     image_processor.set_color_image_filters(parameters.color_image_filters)
-
+	
     # main loop
     while (not display.isWindowClosed()):
+        #print("test")
         # wait for new frames
         pipeline.wait_for_frames()
 
