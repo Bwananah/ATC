@@ -3,6 +3,7 @@ import constants
 import pyrealsense2 as rs
 import numpy as np
 
+""" Responsible for processing the camera output streams """
 class Pipeline():
     def __init__(self):
         self.pipeline = pipeline = rs.pipeline()  # fetches frames
@@ -17,16 +18,16 @@ class Pipeline():
         self.depth_frame_filters = []  # filters to apply to the depth frame (in-order)
         self.color_frame_filters = []  # filters to apply to the color frame (in-order)
     
-    # make pipeline start fetching frames
+    # Makes pipeline start fetching frames
     def start(self):
         self.profile = self.pipeline.start()
         self.profile.get_device().query_sensors()[0].set_option(rs.option.laser_power, 360) # set laser power (in mW)
     
-    # clean up
+    # Clean up
     def stop(self):
         self.pipeline.stop()
     
-    # wait and fetch depth and color frames
+    # Waits and fetches depth and color frames
     def wait_for_frames(self):
         # reset frames
         self.depth_frame = None
@@ -39,7 +40,7 @@ class Pipeline():
             self.depth_frame = aligned_frames.get_depth_frame()
             self.color_frame = aligned_frames.get_color_frame()
     
-    # get current depth and color as images
+    # Gets current depth and color as images
     def get_images(self):
         # depth
         colorized_depth_frame = self.colorizer.colorize(self.depth_frame)  # translate depth to color using colorizer
@@ -51,15 +52,15 @@ class Pipeline():
 
         return depth, color
     
-    # Set the filters to apply to the depth frame (in-order)
+    # Sets the filters to apply to the depth frame (in-order)
     def set_depth_frame_filters(self, filters):
         self.depth_frame_filters = filters
     
-    # Set the filters to apply to the color frame (in-order)
+    # Sets the filters to apply to the color frame (in-order)
     def set_color_frame_filters(self, filters):
         self.color_frame_filters = filters
     
-    # apply all filters in-order to both frames
+    # Applies all filters in-order to both frames
     def apply_filters(self):
         for filter in self.depth_frame_filters:
             self.depth_frame = filter(self.depth_frame)
@@ -67,10 +68,10 @@ class Pipeline():
         for filter in self.color_frame_filters:
             self.color_frame = filter(self.color_frame)
 
-    # get the depth scale (used for converting camera distances to meters)
+    # Gets the depth scale (used for converting camera distances to meters)
     def get_depth_scale(self):
         return self.profile.get_device().first_depth_sensor().get_depth_scale()
     
-    # get original depth
+    # Gets original depth
     def get_camera_depths(self):
         return np.asanyarray(self.depth_frame.get_data())

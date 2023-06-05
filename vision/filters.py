@@ -46,7 +46,7 @@ def temporal(alpha, delta):
     
     return filter
 
-# apply a gaussian blur 
+# gaussian blur 
 def gaussian_blur(kernel_size, sigma):
 
     def filter(image):
@@ -70,6 +70,7 @@ def threshold(thresh, channel):
     
     return filter
 
+# bilateral filter
 def bilateral(d, sigma_color, sigma_dist):
 
     def filter(image):

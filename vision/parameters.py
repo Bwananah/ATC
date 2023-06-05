@@ -4,7 +4,7 @@ import filters
 using_jetson = True
 
 # window parameters
-window_width = 400
+window_width = 800
 window_name = 'ATC: left side warning'
 display_type = 'both'  # 'color', 'depth' or 'both'
 
@@ -13,11 +13,10 @@ detection_cropping = (100, 300, 100, 200)  # (left, right, top, bottom)
 image_cropping = (0, 0, 0, 200)
 
 # alert
-alert_dist = 2 # alert distance (in meters)
+alert_dist = 3 # alert distance (in meters)
 alert_msg = 'ALERTE'
 
 # timer
-#reminder_interval = [120, 180]  # random time interval to remind the Challenger (in seconds)
 reminder_interval = [120, 180]  # random time interval to remind the Challenger (in seconds)
 reminder_min_delay = 30  # time until new reminder if continuously in alert state (in seconds)
 

@@ -5,8 +5,8 @@ from display import Display
 from reminder import Reminder
 import subprocess
 
+# play voice on program start
 subprocess.call(["/usr/bin/vlc", "--intf","dummy","--play-and-exit", "Voices/voice0.wav"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
 
 # instantiate objects
 pipeline = Pipeline()  # fetches and processes camera frames
@@ -26,7 +26,6 @@ try:
 	
     # main loop
     while (not display.isWindowClosed()):
-        #print("test")
         # wait for new frames
         pipeline.wait_for_frames()
 

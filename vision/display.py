@@ -1,26 +1,25 @@
 import cv2
 import constants
-
 import parameters
-#import keyboard
 
+""" Displays information to the screen (if not on Jetson ) """
 class Display():
     def __init__(self, name, width, displaying):
         self.name = name  # window name
         self.width = width  # window width
         self.displaying = displaying  # True if we want to display to a screen, False if we don't
 
-    # create window
+    # Creates window
     def start(self):
         if self.displaying:
             cv2.namedWindow(self.name, constants.WINDOW_SIZE_FLAG)
 
-    # closes window
+    # Closes window
     def stop(self):
         if self.displaying:
             cv2.destroyAllWindows()
     
-    # show image on display
+    # Shows image on display
     def show(self, image, alert):
         if self.displaying:
             # resize image
@@ -51,7 +50,7 @@ class Display():
 
             cv2.imshow(self.name, img)
 
-    # check if user wants to close the window (ESC key or manually closing window)
+    # Checks if user wants to close the window (ESC key or manually closing window)
     def isWindowClosed(self):
         if self.displaying:
             # if displaying, check if window was closed
@@ -61,15 +60,10 @@ class Display():
             if key == constants.WINDOW_ESC_KEY or cv2.getWindowProperty(self.name, constants.WINDOW_STATE_FLAG) < 1:       
                 print('Window was closed')
                 return True
-        #else:
-        #    # if not displaying, check if program needs to stop
-        #    if keyboard.is_pressed(constants.CONSOLE_ESC_KEY):      
-        #        print('Program was stopped')
-        #        return True
-        
+            
         return False
     
-    # resizes images to window width while keeping the original aspect ratio
+    # Resizes images to window width while keeping the original aspect ratio
     def resizeWithAspectRatio(self, image):
         (h, w) = image.shape[:2]
         r = self.width / float(w)

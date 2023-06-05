@@ -3,7 +3,7 @@ import cv2
 import constants
 from skimage import measure
 
-
+""" Processes the depth map and color frames """
 class ImageProcessor:
     def __init__(self, detect_cropping, image_cropping):
         self.depth_image = None  # current depth image
@@ -29,21 +29,21 @@ class ImageProcessor:
         self.image_crop_top = image_cropping[2]
         self.image_crop_bot = image_cropping[3]
 
-    # update current image (and crop)
+    # Updates current images (and crop)
     def update_images(self, depth, color):
         self.height, self.width = color.shape[:2]
         self.depth_image = depth[self.image_crop_bot:self.height - self.image_crop_top, self.image_crop_left:self.width - self.image_crop_right]
         self.color_image = color[self.image_crop_bot:self.height - self.image_crop_top, self.image_crop_left:self.width - self.image_crop_right]
     
-    # Set the filters to apply to the depth image (in-order)
+    # Sets the filters to apply to the depth image (in-order)
     def set_depth_image_filters(self, filters):
         self.depth_image_filters = filters
     
-    # Set the filters to apply to the color image (in-order)
+    # Sets the filters to apply to the color image (in-order)
     def set_color_image_filters(self, filters):
         self.color_image_filters = filters
     
-    # apply all filters in-order to both images
+    # Applies all filters in-order to both images
     def apply_filters(self):
         for filter in self.depth_image_filters:
             self.depth_image = filter(self.depth_image)
@@ -51,6 +51,7 @@ class ImageProcessor:
         for filter in self.color_image_filters:
             self.color_image = filter(self.color_image)
     
+    # Blob detection
     def find_blobs(self, min_blob_size):
         self.labels = measure.label(self.depth_image).astype(np.uint8) # label each pixel as same blob if connected
         labels_copy = np.copy(self.labels)
@@ -69,7 +70,7 @@ class ImageProcessor:
         white_where_blob = np.where(self.labels > 0, 255, 0).astype(np.uint8)  # convert all non-zero labeled pixels to 255
         self.depth_image = cv2.merge((white_where_blob, white_where_blob, white_where_blob))
     
-    # create bbox around blobs and get their distances from original camera depth
+    # Creates bbox around blobs and gets their distances from original camera depth
     def make_bounding_boxes(self, camera_depth, depth_scale):
         # reset distances
         self.distances = []
@@ -112,7 +113,7 @@ class ImageProcessor:
                             constants.BBOX_TEXT_THICKNESS,
                             constants.BBOX_COLOR)
         
-    # get images depending on display type
+    # Gets images depending on display type
     def get_images(self, type):
         if type == 'color':
             return self.color_image
